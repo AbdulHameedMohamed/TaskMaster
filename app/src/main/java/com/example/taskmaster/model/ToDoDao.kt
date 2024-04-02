@@ -1,7 +1,7 @@
-package com.example.taskmaster.ui.theme.model
+package com.example.taskmaster.model
 
 import androidx.room.*
-import com.example.taskmaster.ui.theme.model.data.Task
+import com.example.taskmaster.model.data.Task
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,13 +14,13 @@ interface ToDoDao {
     fun getSelectedTask(taskId: Int): Flow<Task>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTask(toDoTask: Task)
+    suspend fun addTask(task: Task)
 
     @Update
-    suspend fun updateTask(toDoTask: Task)
+    suspend fun updateTask(task: Task)
 
     @Delete
-    suspend fun deleteTask(toDoTask: Task)
+    suspend fun deleteTask(task: Task)
 
     @Query("DELETE FROM task_table")
     suspend fun deleteAllTasks()

@@ -1,4 +1,4 @@
-package com.example.taskmaster.ui.theme.util
+package com.example.taskmaster.util
 
 object Constants {
 

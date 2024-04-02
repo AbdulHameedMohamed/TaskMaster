@@ -1,8 +1,8 @@
-package com.example.taskmaster.ui.theme.model.data
+package com.example.taskmaster.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.taskmaster.ui.theme.util.Constants.TaskTable
+import com.example.taskmaster.util.Constants.TaskTable
 
 @Entity(tableName = TaskTable)
 data class Task(

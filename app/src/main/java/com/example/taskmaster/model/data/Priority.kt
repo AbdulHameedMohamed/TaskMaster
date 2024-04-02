@@ -1,4 +1,4 @@
-package com.example.taskmaster.ui.theme.model.data
+package com.example.taskmaster.model.data
 
 import androidx.compose.ui.graphics.Color
 import com.example.taskmaster.ui.theme.HighPriorityColor
