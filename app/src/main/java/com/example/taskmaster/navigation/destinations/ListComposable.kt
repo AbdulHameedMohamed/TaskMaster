@@ -1,5 +1,6 @@
 package com.example.taskmaster.navigation.destinations
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
@@ -11,7 +12,8 @@ import com.example.taskmaster.ui.viewmodels.SharedViewModel
 import com.example.taskmaster.util.Constants
 import com.example.taskmaster.util.toAction
 
-@ExperimentalMaterialApi
+@OptIn(ExperimentalAnimationApi::class,
+    ExperimentalMaterialApi::class)
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel: SharedViewModel

@@ -1,6 +1,7 @@
 package com.example.taskmaster.ui.screens.list
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
 fun ListScreen(
@@ -76,6 +78,10 @@ fun ListScreen(
                 highPriorityTasks = highPriorityTasks,
                 sortState = sortState,
                 searchAppBarState = searchAppBarState,
+                onSwipeToDelete = { action, task ->
+                    sharedViewModel.action.value = action
+                    sharedViewModel.updateTaskFields(selectedTask = task)
+                },
                 navigateToTaskScreen = navigateToTaskScreen
             )
         },
