@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.taskmaster.model.data.Priority
 import com.example.taskmaster.ui.theme.LARGE_PADDING
 import com.example.taskmaster.ui.theme.PRIORITY_INDICATOR_SIZE
+import com.example.taskmaster.ui.theme.Typography
 
 @Composable
 fun PriorityItem(priority: Priority) {
@@ -26,6 +27,7 @@ fun PriorityItem(priority: Priority) {
             modifier = Modifier
                 .padding(start = LARGE_PADDING),
             text = priority.name,
+            style = Typography.subtitle2,
             color = MaterialTheme.colors.onSurface
         )
     }
