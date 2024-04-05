@@ -23,22 +23,46 @@ import com.example.taskmaster.ui.theme.taskItemBackgroundColor
 import com.example.taskmaster.ui.theme.taskItemTextColor
 import com.example.taskmaster.util.RequestState
 import androidx.compose.foundation.lazy.items
+import com.example.taskmaster.util.SearchAppBarState
 
 @ExperimentalMaterialApi
 @Composable
 fun ListContent(
-    tasks: RequestState<List<Task>>,
+    allTasks: RequestState<List<Task>>,
+    searchedTasks: RequestState<List<Task>>,
+    searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
-    if(tasks is RequestState.Success){
-        if (tasks.data.isEmpty()) {
-            EmptyContent()
-        } else {
-            DisplayTasks(
-                tasks = tasks.data,
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchedTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = searchedTasks.data,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         }
+    } else {
+        if (allTasks is RequestState.Success) {
+            HandleListContent(
+                tasks = allTasks.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun HandleListContent(
+    tasks: List<Task>,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayTasks(
+            tasks = tasks,
+            navigateToTaskScreen = navigateToTaskScreen
+        )
     }
 }
 
@@ -56,7 +80,7 @@ fun DisplayTasks(
             }
         ) { task ->
             TaskItem(
-                toDoTask = task,
+                task = task,
                 navigateToTaskScreen = navigateToTaskScreen
             )
         }
@@ -66,7 +90,7 @@ fun DisplayTasks(
 @ExperimentalMaterialApi
 @Composable
 fun TaskItem(
-    toDoTask: Task,
+    task: Task,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     Surface(
@@ -76,7 +100,7 @@ fun TaskItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(toDoTask.id)
+            navigateToTaskScreen(task.id)
         }
     ) {
         Column(
@@ -87,7 +111,7 @@ fun TaskItem(
             Row {
                 Text(
                     modifier = Modifier.weight(8f),
-                    text = toDoTask.title,
+                    text = task.title,
                     color = MaterialTheme.colors.taskItemTextColor,
                     style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.Bold,
@@ -104,14 +128,14 @@ fun TaskItem(
                             .size(PRIORITY_INDICATOR_SIZE)
                     ) {
                         drawCircle(
-                            color = toDoTask.priority.color
+                            color = task.priority.color
                         )
                     }
                 }
             }
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = toDoTask.description,
+                text = task.description,
                 color = MaterialTheme.colors.taskItemTextColor,
                 style = MaterialTheme.typography.subtitle1,
                 maxLines = 2,
@@ -125,9 +149,9 @@ fun TaskItem(
 @ExperimentalMaterialApi
 @Composable
 @Preview
-fun TaskItemPreview() {
+private fun TaskItemPreview() {
     TaskItem(
-        toDoTask = Task(
+        task = Task(
             id = 0,
             title = "Title",
             description = "Some random text",
