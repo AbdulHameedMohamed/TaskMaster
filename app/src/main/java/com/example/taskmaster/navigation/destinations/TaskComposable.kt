@@ -1,21 +1,39 @@
 package com.example.taskmaster.navigation.destinations
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.taskmaster.ui.viewmodels.SharedViewModel
 import com.example.taskmaster.util.Action
 import com.example.taskmaster.util.Constants
+import com.example.taskmaster.ui.screens.task.TaskScreen
 
 fun NavGraphBuilder.taskComposable(
+    sharedViewModel: SharedViewModel,
     navigateToListScreen: (Action) -> Unit
-){
+) {
     composable(
         route = Constants.TASK_SCREEN,
-        arguments = listOf(navArgument(Constants.TASK_ARGUMENT_KEY){
+        arguments = listOf(navArgument(Constants.TASK_ARGUMENT_KEY) {
             type = NavType.IntType
         })
-    ){
+    ) { navBackStackEntry ->
+        val taskId = navBackStackEntry.arguments!!.getInt(Constants.TASK_ARGUMENT_KEY)
+        sharedViewModel.getSelectedTask(taskId = taskId)
+        val selectedTask by sharedViewModel.selectedTask.collectAsState()
 
+        LaunchedEffect(key1 = taskId) {
+            sharedViewModel.updateTaskFields(selectedTask = selectedTask)
+        }
+
+        TaskScreen(
+            selectedTask = selectedTask,
+            sharedViewModel = sharedViewModel,
+            navigateToListScreen = navigateToListScreen
+        )
     }
 }

@@ -1,9 +1,11 @@
 package com.example.taskmaster.ui.viewmodels
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.taskmaster.model.data.Priority
 import com.example.taskmaster.model.data.Task
 import com.example.taskmaster.model.repositories.ToDoRepository
 import com.example.taskmaster.util.RequestState
@@ -15,11 +17,15 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-
 @HiltViewModel
 class SharedViewModel @Inject constructor(
     private val repository: ToDoRepository
 ) : ViewModel() {
+
+    val id: MutableState<Int> = mutableIntStateOf(0)
+    val title: MutableState<String> = mutableStateOf("")
+    val description: MutableState<String> = mutableStateOf("")
+    val priority: MutableState<Priority> = mutableStateOf(Priority.LOW)
 
     val searchAppBarState: MutableState<SearchAppBarState> =
         mutableStateOf(SearchAppBarState.CLOSED)
@@ -42,4 +48,28 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    private val _selectedTask: MutableStateFlow<Task?> = MutableStateFlow(null)
+    val selectedTask: StateFlow<Task?> = _selectedTask
+
+    fun getSelectedTask(taskId: Int) {
+        viewModelScope.launch {
+            repository.getSelectedTask(taskId = taskId).collect { task ->
+                _selectedTask.value = task
+            }
+        }
+    }
+
+    fun updateTaskFields(selectedTask: Task?) {
+        if (selectedTask != null) {
+            id.value = selectedTask.id
+            title.value = selectedTask.title
+            description.value = selectedTask.description
+            priority.value = selectedTask.priority
+        } else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.LOW
+        }
+    }
 }
