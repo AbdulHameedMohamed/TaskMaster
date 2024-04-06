@@ -17,8 +17,10 @@ import com.example.taskmaster.util.Action
 import com.example.taskmaster.util.Constants
 import com.example.taskmaster.util.toAction
 
-@OptIn(ExperimentalAnimationApi::class,
-    ExperimentalMaterialApi::class)
+@OptIn(
+    ExperimentalAnimationApi::class,
+    ExperimentalMaterialApi::class
+)
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     sharedViewModel: SharedViewModel
@@ -34,7 +36,7 @@ fun NavGraphBuilder.listComposable(
         var myAction by rememberSaveable { mutableStateOf(Action.NO_ACTION) }
 
         LaunchedEffect(key1 = myAction) {
-            if(action != myAction){
+            if (action != myAction) {
                 myAction = action
                 sharedViewModel.action.value = action
             }
