@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.taskmaster.R
 import com.example.taskmaster.ui.theme.LOGO_HEIGHT
@@ -39,7 +40,7 @@ fun SplashScreen(
         targetValue = if (startAnimation) 0.dp else 100.dp,
         animationSpec = tween(
             durationMillis = 1000
-        ), label = "Animate Logo From Bottom To Middle Of Screen"
+        ), "Animate Logo From Bottom To Middle Of Screen"
     )
     val alphaState by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
@@ -54,6 +55,11 @@ fun SplashScreen(
         navigateToListScreen()
     }
 
+    Splash(offsetState = offsetState, alphaState = alphaState)
+}
+
+@Composable
+fun Splash(offsetState: Dp, alphaState: Float) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -83,7 +89,5 @@ fun getLogo(): Int {
 @Composable
 @Preview
 private fun SplashScreenPreview() {
-    SplashScreen(
-        navigateToListScreen = {}
-    )
+    Splash(offsetState = 0.dp, alphaState = 1f)
 }
