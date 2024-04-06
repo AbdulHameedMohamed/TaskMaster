@@ -129,12 +129,12 @@ class SharedViewModel @Inject constructor(
 
     private fun addTask() {
         viewModelScope.launch(Dispatchers.IO) {
-            val Task = Task(
+            val task = Task(
                 title = title.value,
                 description = description.value,
                 priority = priority.value
             )
-            repository.addTask(task = Task)
+            repository.addTask(task = task)
         }
         searchAppBarState.value = SearchAppBarState.CLOSED
     }
@@ -190,7 +190,6 @@ class SharedViewModel @Inject constructor(
 
             }
         }
-        this.action.value = Action.NO_ACTION
     }
 
     fun updateTaskFields(selectedTask: Task?) {
